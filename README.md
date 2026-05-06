@@ -2,6 +2,10 @@
 
 A single-page bridal photography booking website for **Bloom & Veil**, a boutique studio specialising in elegant wedding and bridal portrait sessions. Visitors can browse packages, view the gallery, and submit a booking enquiry — all from one beautifully styled page.
 
+## Preview
+
+![Bloom & Veil site preview](screenshots/preview.png)
+
 ## Live Site
 [View live site](https://pentareddymanisha.github.io/bridebooking/)
 
@@ -14,7 +18,7 @@ A single-page bridal photography booking website for **Bloom & Veil**, a boutiqu
 ## File Structure
 
 | File / Folder | Description |
-|---|---|
+| --- | --- |
 | `index.html` | Entire site — HTML, CSS, and JavaScript in one file |
 | `.github/workflows/deploy.yml` | GitHub Actions workflow that deploys to GitHub Pages on every push to `main` |
 | `CLAUDE.md` | Instructions for the Claude Code AI assistant |
@@ -41,7 +45,7 @@ $listener.Start()
 Start-Process "http://localhost:8080/"
 while ($listener.IsListening) {
     $ctx = $listener.GetContext()
-    $bytes = [System.IO.File]::ReadAllBytes("index.html")
+    $bytes = [System.IO.File]::ReadAllBytes("C:\Users\ManishaPentareddy\Downloads\BRIBEBOOKING\index.html")
     $ctx.Response.ContentType = "text/html; charset=utf-8"
     $ctx.Response.OutputStream.Write($bytes, 0, $bytes.Length)
     $ctx.Response.OutputStream.Close()
