@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bloom & Veil — Bridal Photography</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Design Tokens ───────────────────────────────── */
+    :root {
+      --blush-light: #fdf0f3;
+      --blush:       #f2c4ce;
+      --blush-deep:  #e8a4b8;
+      --gold:        #c9a84c;
+      --gold-dark:   #a07830;
+      --text-dark:   #2d2020;
+      --text-mid:    #5a4040;
+      --white:       #ffffff;
+      --nav-h:       70px;
+    }
+
+    /* ── Reset / Base ────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Lato', sans-serif;
+      color: var(--text-dark);
+      background: var(--white);
+      line-height: 1.7;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* ── Typography helpers ──────────────────────────── */
+    .section-label {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--text-dark);
+      line-height: 1.2;
+      margin-top: 0.4rem;
+    }
+    .section-subtitle {
+      color: var(--text-mid);
+      max-width: 580px;
+      margin: 1rem auto 0;
+    }
+
+    /* ── Buttons ─────────────────────────────────────── */
+    .btn-gold {
+      display: inline-block;
+      padding: 0.85rem 2.2rem;
+      background: var(--gold);
+      color: var(--white);
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .btn-gold:hover { background: var(--gold-dark); transform: translateY(-2px); }
+
+    .btn-outline {
+      display: inline-block;
+      padding: 0.75rem 1.8rem;
+      border: 1.5px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: transparent;
+      transition: background 0.25s, color 0.25s;
+    }
+    .btn-outline:hover { background: var(--gold); color: var(--white); }
+
+    /* ── Divider ornament ────────────────────────────── */
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      justify-content: center;
+      margin: 1.2rem 0 2.5rem;
+      color: var(--gold);
+      font-size: 1.1rem;
+    }
+    .ornament::before, .ornament::after {
+      content: '';
+      flex: 1;
+      max-width: 80px;
+      height: 1px;
+      background: var(--blush-deep);
+    }
+
+    /* ════════════════════════════════════════════════════
+       NAV
+    ════════════════════════════════════════════════════ */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      z-index: 100;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    #navbar.scrolled {
+      background: rgba(253, 240, 243, 0.97);
+      box-shadow: 0 2px 18px rgba(201,168,76,0.12);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.03em;
+      transition: color 0.3s;
+    }
+    #navbar.scrolled .nav-logo { color: var(--text-dark); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+      transition: color 0.25s;
+    }
+    #navbar.scrolled .nav-links a { color: var(--text-mid); }
+    .nav-links a:hover { color: var(--gold) !important; }
+    .nav-links .btn-gold { padding: 0.55rem 1.4rem; font-size: 0.75rem; }
+
+    /* hamburger */
+    #nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    #nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: background 0.3s;
+    }
+    #navbar.scrolled #nav-toggle span { background: var(--text-dark); }
+
+    @media (max-width: 768px) {
+      #nav-toggle { display: flex; }
+      .nav-links {
+        position: fixed;
+        top: var(--nav-h);
+        left: 0; right: 0;
+        background: var(--blush-light);
+        flex-direction: column;
+        gap: 0;
+        padding: 1.5rem 0 2rem;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        transform: translateY(-110%);
+        transition: transform 0.35s ease;
+      }
+      .nav-links.open { transform: translateY(0); }
+      .nav-links a { color: var(--text-mid) !important; padding: 0.9rem 2rem; width: 100%; }
+      .nav-links .btn-gold { margin: 0.8rem 2rem 0; width: calc(100% - 4rem); text-align: center; }
+    }
+
+    /* ════════════════════════════════════════════════════
+       HERO
+    ════════════════════════════════════════════════════ */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    #hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1600&q=80') center/cover no-repeat;
+    }
+    #hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(30,10,10,0.52) 0%, rgba(30,10,10,0.38) 60%, rgba(30,10,10,0.6) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 2rem 1.5rem;
+      max-width: 780px;
+    }
+    .hero-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 7vw, 5.5rem);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.12;
+      margin-bottom: 1.4rem;
+    }
+    .hero-sub {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      max-width: 520px;
+      margin: 0 auto 2.4rem;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .hero-scroll::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: rgba(255,255,255,0.4);
+      animation: scrollLine 1.8s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%   { transform: scaleY(0); transform-origin: top; }
+      50%  { transform: scaleY(1); transform-origin: top; }
+      51%  { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ════════════════════════════════════════════════════
+       ABOUT
+    ════════════════════════════════════════════════════ */
+    #about {
+      scroll-margin-top: var(--nav-h);
+      padding: 7rem 5%;
+      background: var(--white);
+    }
+    .about-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .about-img-wrap {
+      position: relative;
+    }
+    .about-img-wrap img {
+      width: 100%;
+      height: 560px;
+      object-fit: cover;
+      object-position: top;
+    }
+    .about-img-wrap::before {
+      content: '';
+      position: absolute;
+      top: -18px; left: -18px;
+      width: 100%; height: 100%;
+      border: 2px solid var(--blush-deep);
+      z-index: -1;
+    }
+    .about-text .section-subtitle { margin: 0.8rem 0 1.4rem; max-width: 100%; }
+    .about-text p + p { margin-top: 1rem; }
+    .about-sig {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.6rem;
+      color: var(--gold);
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .about-img-wrap img { height: 380px; }
+    }
+
+    /* ════════════════════════════════════════════════════
+       PACKAGES
+    ════════════════════════════════════════════════════ */
+    #packages {
+      scroll-margin-top: var(--nav-h);
+      padding: 7rem 5%;
+      background: var(--blush-light);
+      text-align: center;
+    }
+    .packages-grid {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 3.5rem;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .pkg-card {
+      flex: 1 1 280px;
+      max-width: 340px;
+      background: var(--white);
+      border: 1px solid var(--blush);
+      padding: 2.8rem 2rem 2.4rem;
+      text-align: center;
+      transition: transform 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .pkg-card:hover { transform: translateY(-6px); box-shadow: 0 18px 48px rgba(201,168,76,0.15); }
+    .pkg-card.featured {
+      border-color: var(--gold);
+      background: linear-gradient(160deg, #fff9f0 0%, #fffefb 100%);
+    }
+    .pkg-badge {
+      position: absolute;
+      top: 1.1rem; right: -2.2rem;
+      background: var(--gold);
+      color: var(--white);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3rem 2.8rem;
+      transform: rotate(45deg);
+    }
+    .pkg-icon { font-size: 2.4rem; margin-bottom: 1rem; }
+    .pkg-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--text-dark);
+      margin-bottom: 0.3rem;
+    }
+    .pkg-price {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      margin: 0.8rem 0 0.2rem;
+    }
+    .pkg-price span { font-size: 1rem; font-weight: 400; color: var(--text-mid); }
+    .pkg-divider { width: 40px; height: 1px; background: var(--blush-deep); margin: 1.2rem auto; }
+    .pkg-features { text-align: left; margin-bottom: 2rem; }
+    .pkg-features li {
+      padding: 0.42rem 0;
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .pkg-features li::before {
+      content: '✦';
+      color: var(--gold);
+      font-size: 0.6rem;
+      flex-shrink: 0;
+    }
+
+    /* ════════════════════════════════════════════════════
+       GALLERY
+    ════════════════════════════════════════════════════ */
+    #gallery {
+      scroll-margin-top: var(--nav-h);
+      padding: 7rem 5%;
+      background: var(--white);
+      text-align: center;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      max-width: 1100px;
+      margin: 3.5rem auto 0;
+    }
+    .gallery-item {
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      cursor: pointer;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease, filter 0.5s ease;
+      filter: brightness(0.97) saturate(1.05);
+    }
+    .gallery-item:hover img { transform: scale(1.06); filter: brightness(1.02) saturate(1.1); }
+
+    @media (max-width: 768px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ════════════════════════════════════════════════════
+       BOOKING FORM
+    ════════════════════════════════════════════════════ */
+    #booking {
+      scroll-margin-top: var(--nav-h);
+      padding: 7rem 5%;
+      background: var(--blush-light);
+      text-align: center;
+    }
+    .form-card {
+      background: var(--white);
+      max-width: 780px;
+      margin: 3.5rem auto 0;
+      padding: 3rem 3.5rem;
+      border-top: 3px solid var(--gold);
+      box-shadow: 0 8px 40px rgba(201,168,76,0.1);
+      text-align: left;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.4rem 2rem;
+    }
+    .form-field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-field.full { grid-column: 1 / -1; }
+    label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+    }
+    input, select, textarea {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      background: var(--blush-light);
+      border: 1px solid var(--blush);
+      padding: 0.75rem 1rem;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.25s, background 0.25s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--gold);
+      background: var(--white);
+    }
+    textarea { resize: vertical; min-height: 120px; }
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+      pointer-events: none;
+    }
+    .form-submit { margin-top: 2rem; text-align: center; }
+    .btn-submit {
+      padding: 1rem 3rem;
+      font-size: 0.88rem;
+      letter-spacing: 0.18em;
+      position: relative;
+    }
+    .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+    /* spinner */
+    .spinner {
+      display: none;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* success */
+    #form-success {
+      display: none;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    .success-icon {
+      font-size: 3.5rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    #form-success h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      margin-bottom: 0.6rem;
+    }
+    #form-success p { color: var(--text-mid); }
+
+    /* error banner */
+    #form-error {
+      display: none;
+      background: #fde8e8;
+      border-left: 3px solid #c0392b;
+      padding: 0.85rem 1.2rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      color: #7b2020;
+      position: relative;
+    }
+    #form-error .close-err {
+      position: absolute;
+      right: 0.8rem; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      cursor: pointer; font-size: 1rem; color: #7b2020;
+    }
+
+    @media (max-width: 640px) {
+      .form-card { padding: 2rem 1.5rem; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-field.full { grid-column: 1; }
+    }
+
+    /* ════════════════════════════════════════════════════
+       CONTACT
+    ════════════════════════════════════════════════════ */
+    #contact {
+      scroll-margin-top: var(--nav-h);
+      padding: 6rem 5% 0;
+      background: var(--text-dark);
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+    }
+    #contact .section-title { color: var(--white); }
+    .contact-grid {
+      display: flex;
+      gap: 3rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 900px;
+      margin: 3rem auto 0;
+    }
+    .contact-item {
+      flex: 1 1 180px;
+      max-width: 220px;
+    }
+    .contact-item-icon {
+      font-size: 1.7rem;
+      color: var(--gold);
+      margin-bottom: 0.7rem;
+    }
+    .contact-item h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+    .contact-item p, .contact-item a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+    }
+    .contact-item a:hover { color: var(--gold); }
+    .social-row {
+      display: flex;
+      gap: 1.4rem;
+      justify-content: center;
+      margin: 3.5rem 0 0;
+    }
+    .social-row a {
+      width: 44px; height: 44px;
+      border: 1px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.6);
+      transition: border-color 0.25s, color 0.25s;
+    }
+    .social-row a:hover { border-color: var(--gold); color: var(--gold); }
+    .footer-bar {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 1.8rem 0;
+      margin-top: 3.5rem;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.35);
+    }
+    .footer-bar span { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════ NAV ═══════════════ -->
+  <nav id="navbar" aria-label="Main navigation">
+    <a href="#hero" class="nav-logo">Bloom &amp; Veil</a>
+    <button id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#packages">Packages</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#booking" class="btn-gold">Book Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <section id="hero">
+    <div id="hero-bg" role="img" aria-label="Bride and groom at sunset"></div>
+    <div class="hero-content">
+      <p class="hero-label">Bridal Photography</p>
+      <h1 class="hero-title">Your Love Story,<br>Beautifully Told</h1>
+      <p class="hero-sub">Timeless, romantic imagery crafted to honour the most precious day of your life.</p>
+      <a href="#booking" class="btn-gold">Reserve Your Date</a>
+    </div>
+    <div class="hero-scroll" aria-hidden="true">Scroll</div>
+  </section>
+
+  <!-- ═══════════════ ABOUT ═══════════════ -->
+  <section id="about">
+    <div class="about-inner">
+      <div class="about-img-wrap">
+        <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&q=80"
+             alt="Photographer Sophia Claire at work" loading="lazy" />
+      </div>
+      <div class="about-text">
+        <p class="section-label">About the Artist</p>
+        <h2 class="section-title">I Capture<br>Moments of Grace</h2>
+        <div class="ornament">✦</div>
+        <p class="section-subtitle">
+          Hello — I'm Sophia Claire, a fine-art bridal photographer based in New York, travelling
+          worldwide to document love stories. With over a decade behind the lens, I believe every
+          wedding has its own quiet poetry waiting to be seen.
+        </p>
+        <p class="section-subtitle" style="margin-top:1rem;">
+          My approach is gentle and unobtrusive. I blend into your day so the moments I capture
+          feel completely, beautifully real — not posed, not performed. Just you, as you truly are.
+        </p>
+        <p class="about-sig">— Sophia Claire</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ PACKAGES ═══════════════ -->
+  <section id="packages">
+    <p class="section-label">Investment</p>
+    <h2 class="section-title">Choose Your Collection</h2>
+    <div class="ornament">✦</div>
+    <p class="section-subtitle">Every package includes a personal consultation and a private online gallery delivered within three weeks.</p>
+
+    <div class="packages-grid">
+
+      <!-- Essential -->
+      <div class="pkg-card">
+        <div class="pkg-icon">🌸</div>
+        <h3 class="pkg-name">Essential</h3>
+        <div class="pkg-price">$1,800<span> / event</span></div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li>6 hours of coverage</li>
+          <li>1 photographer</li>
+          <li>300+ edited images</li>
+          <li>Online gallery (1 year)</li>
+          <li>Print-ready digital files</li>
+        </ul>
+        <button class="btn-outline" onclick="choosePackage('Essential')">Choose Essential</button>
+      </div>
+
+      <!-- Signature (featured) -->
+      <div class="pkg-card featured">
+        <div class="pkg-badge">Popular</div>
+        <div class="pkg-icon">🌹</div>
+        <h3 class="pkg-name">Signature</h3>
+        <div class="pkg-price">$3,200<span> / event</span></div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li>10 hours of coverage</li>
+          <li>2 photographers</li>
+          <li>Engagement session</li>
+          <li>600+ edited images</li>
+          <li>30-page fine-art album</li>
+          <li>Private gallery (3 years)</li>
+        </ul>
+        <button class="btn-gold" onclick="choosePackage('Signature')">Choose Signature</button>
+      </div>
+
+      <!-- Luxury -->
+      <div class="pkg-card">
+        <div class="pkg-icon">👑</div>
+        <h3 class="pkg-name">Luxury</h3>
+        <div class="pkg-price">$5,500<span> / event</span></div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li>Full-day coverage</li>
+          <li>2 photographers + assistant</li>
+          <li>Engagement + boudoir session</li>
+          <li>1,000+ edited images</li>
+          <li>50-page heirloom album</li>
+          <li>Canvas wall art (16×20)</li>
+          <li>Rush delivery option</li>
+        </ul>
+        <button class="btn-outline" onclick="choosePackage('Luxury')">Choose Luxury</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════ GALLERY ═══════════════ -->
+  <section id="gallery">
+    <p class="section-label">Portfolio</p>
+    <h2 class="section-title">A Glimpse of Love</h2>
+    <div class="ornament">✦</div>
+    <p class="section-subtitle">A small selection from recent celebrations — each one as unique as the couple at its heart.</p>
+
+    <div class="gallery-grid" role="list" aria-label="Wedding photography gallery">
+      <div class="gallery-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80"
+             alt="Couple sharing first dance" loading="lazy" />
+      </div>
+      <div class="gallery-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80"
+             alt="Bride in morning light" loading="lazy" />
+      </div>
+      <div class="gallery-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&q=80"
+             alt="Outdoor wedding ceremony" loading="lazy" />
+      </div>
+      <div class="gallery-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=600&q=80"
+             alt="Couple portrait at sunset" loading="lazy" />
+      </div>
+      <div class="gallery-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1533038590840-1cde6e668a91?w=600&q=80"
+             alt="Wedding details and florals" loading="lazy" />
+      </div>
+      <div class="gallery-item" role="listitem">
+        <img src="https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=600&q=80"
+             alt="Reception celebration" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ BOOKING FORM ═══════════════ -->
+  <section id="booking">
+    <p class="section-label">Reservations</p>
+    <h2 class="section-title">Book Your Session</h2>
+    <div class="ornament">✦</div>
+    <p class="section-subtitle">Fill in the details below and I'll be in touch within 24 hours to confirm availability.</p>
+
+    <div class="form-card" role="main">
+      <div id="form-error" role="alert">
+        <span id="form-error-text">Something went wrong. Please try again.</span>
+        <button class="close-err" aria-label="Close error" onclick="document.getElementById('form-error').style.display='none'">✕</button>
+      </div>
+
+      <form id="booking-form" novalidate>
+        <div class="form-grid">
+
+          <div class="form-field">
+            <label for="fullName">Full Name *</label>
+            <input type="text" id="fullName" name="fullName" placeholder="Jane &amp; John Smith" required />
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required />
+          </div>
+
+          <div class="form-field">
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" required />
+          </div>
+
+          <div class="form-field">
+            <label for="preferredDate">Preferred Date *</label>
+            <input type="date" id="preferredDate" name="preferredDate" required />
+          </div>
+
+          <div class="form-field">
+            <label for="preferredTime">Preferred Time *</label>
+            <input type="time" id="preferredTime" name="preferredTime" required />
+          </div>
+
+          <div class="form-field">
+            <label for="package">Package *</label>
+            <div class="select-wrap">
+              <select id="package" name="package" required>
+                <option value="" disabled selected>Select a package</option>
+                <option value="Essential">Essential — $1,800</option>
+                <option value="Signature">Signature — $3,200</option>
+                <option value="Luxury">Luxury — $5,500</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="location">Venue / Location *</label>
+            <input type="text" id="location" name="location" placeholder="City, Venue Name" required />
+          </div>
+
+          <div class="form-field">
+            <label for="numberOfPeople">Number of Guests</label>
+            <input type="number" id="numberOfPeople" name="numberOfPeople" placeholder="e.g. 80" min="1" />
+          </div>
+
+          <div class="form-field full">
+            <label for="message">Message / Special Requests</label>
+            <textarea id="message" name="message" placeholder="Tell me about your vision, special moments you'd love captured, or any questions you have…"></textarea>
+          </div>
+
+        </div>
+
+        <div class="form-submit">
+          <button type="submit" class="btn-gold btn-submit" id="submit-btn">
+            <span class="spinner" id="btn-spinner"></span>
+            <span id="btn-text">Send Enquiry</span>
+          </button>
+          <p style="margin-top:1rem;font-size:0.8rem;color:var(--text-mid);">
+            * Required fields. Your details will never be shared with third parties.
+          </p>
+        </div>
+      </form>
+
+      <div id="form-success" role="status" aria-live="polite">
+        <div class="success-icon">✉️</div>
+        <h3>Thank You, <span id="success-name">friend</span>!</h3>
+        <p>Your booking enquiry has been received. I'll be in touch within 24 hours<br>to confirm availability and next steps.</p>
+        <div style="margin-top:2rem;">
+          <a href="#gallery" class="btn-outline">Explore the Gallery</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ CONTACT ═══════════════ -->
+  <section id="contact">
+    <p class="section-label" style="color:var(--gold);">Get in Touch</p>
+    <h2 class="section-title">Let's Connect</h2>
+    <div class="ornament" style="color:var(--gold-dark);">✦</div>
+
+    <div class="contact-grid">
+      <div class="contact-item">
+        <div class="contact-item-icon">📍</div>
+        <h4>Studio</h4>
+        <p>142 Magnolia Lane<br>New York, NY 10001</p>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">📞</div>
+        <h4>Phone</h4>
+        <p><a href="tel:+12125550199">+1 (212) 555-0199</a></p>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">✉</div>
+        <h4>Email</h4>
+        <p><a href="mailto:hello@bloomandveil.com">hello@bloomandveil.com</a></p>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">🕐</div>
+        <h4>Hours</h4>
+        <p>Mon – Fri: 9am – 6pm<br>Weekends: by appointment</p>
+      </div>
+    </div>
+
+    <div class="social-row" aria-label="Social media links">
+      <!-- SVG icons for Instagram, Pinterest, Facebook, TikTok -->
+      <a href="#" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="5"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="Pinterest">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.03-2.83.19-.77 1.26-5.34 1.26-5.34s-.32-.65-.32-1.6c0-1.5.87-2.62 1.95-2.62.92 0 1.37.69 1.37 1.52 0 .93-.59 2.32-.9 3.6-.26 1.07.53 1.95 1.58 1.95 1.9 0 3.17-2.43 3.17-5.31 0-2.19-1.48-3.72-3.59-3.72-2.45 0-3.88 1.84-3.88 3.74 0 .74.28 1.53.64 1.96.07.08.08.16.06.24l-.24.95c-.04.14-.12.17-.27.1-1-.47-1.63-1.93-1.63-3.11 0-2.52 1.83-4.83 5.28-4.83 2.77 0 4.93 1.97 4.93 4.61 0 2.75-1.73 4.96-4.13 4.96-.81 0-1.57-.42-1.83-.91l-.5 1.86c-.18.69-.67 1.56-.99 2.08.75.23 1.54.35 2.36.35 5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="Facebook">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="TikTok">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.79 1.54V6.79a4.85 4.85 0 01-1.02-.1z"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="footer-bar">
+      &copy; 2026 <span>Bloom &amp; Veil Photography</span>. All rights reserved.
+      &nbsp;·&nbsp; Crafted with <span>♥</span> for love stories.
+    </div>
+  </section>
+
+  <script>
+    /* ── Navbar scroll effect ── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ── Mobile nav toggle ── */
+    const navToggle = document.getElementById('nav-toggle');
+    const navLinks  = document.getElementById('nav-links');
+    navToggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open);
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    /* ── Package button → form autofill ── */
+    function choosePackage(name) {
+      const sel = document.getElementById('package');
+      sel.value = name;
+      document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /* ── Booking form submission ── */
+    document.getElementById('booking-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const form      = this;
+      const submitBtn = document.getElementById('submit-btn');
+      const spinner   = document.getElementById('btn-spinner');
+      const btnText   = document.getElementById('btn-text');
+      const errorEl   = document.getElementById('form-error');
+      const errorText = document.getElementById('form-error-text');
+
+      // Hide stale error
+      errorEl.style.display = 'none';
+
+      // Basic HTML5 validation
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      // Build payload
+      const data = {
+        name:            form.fullName.value.trim(),
+        email:           form.email.value.trim(),
+        phone:           form.phone.value.trim(),
+        preferred_date:  form.preferredDate.value,
+        preferred_time:  form.preferredTime.value,
+        package:         form.package.value,
+        location:        form.location.value.trim(),
+        number_of_people: form.numberOfPeople.value || 'Not specified',
+        message:         form.message.value.trim() || 'None',
+      };
+
+      // Loading state
+      submitBtn.disabled = true;
+      spinner.style.display = 'inline-block';
+      btnText.textContent = 'Sending…';
+
+      try {
+        const res = await fetch('https://formsubmit.co/ajax/manisha_p@i-mxms.com', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        // FormSubmit returns HTML (not JSON) on the very first submission while
+        // the endpoint is awaiting email activation — parse defensively.
+        let json = null;
+        const contentType = res.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
+          json = await res.json();
+        } else {
+          await res.text(); // drain the body
+        }
+
+        const activated = json !== null;
+        const succeeded = activated ? (res.ok && json.success !== 'false') : res.ok;
+
+        if (succeeded) {
+          form.style.display = 'none';
+          const successEl = document.getElementById('form-success');
+          const firstName = data.name.split(/[\s&]+/)[0];
+          document.getElementById('success-name').textContent = firstName;
+          successEl.style.display = 'block';
+        } else if (!activated) {
+          // First-ever submission — FormSubmit sent an activation email
+          errorText.innerHTML =
+            '<strong>Almost there!</strong> FormSubmit sent a confirmation email to the inbox. ' +
+            'Click the activation link in that email, then submit this form again.';
+          errorEl.style.display = 'block';
+          submitBtn.disabled = false;
+          spinner.style.display = 'none';
+          btnText.textContent = 'Send Enquiry';
+        } else {
+          throw new Error((json && json.message) || 'Submission failed');
+        }
+      } catch (err) {
+        errorText.textContent = err.message && err.message !== 'Failed to fetch'
+          ? err.message
+          : 'Could not reach the server. Please check your connection and try again.';
+        errorEl.style.display = 'block';
+        submitBtn.disabled = false;
+        spinner.style.display = 'none';
+        btnText.textContent = 'Send Enquiry';
+      }
+    });
+
+    /* ── Set date input min to today ── */
+    const dateInput = document.getElementById('preferredDate');
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
+  </script>
+</body>
+</html>
